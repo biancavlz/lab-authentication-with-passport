@@ -7,6 +7,22 @@ const passport       = require('passport');
 const zxcvbn         = require('zxcvbn');
 const ensureLogin    = require("connect-ensure-login");
 
+router.get('/login', (req, res, next) => {
+  res.render('passport/login', {
+    errorMessage: req.flash('error')
+  });
+});
+
+router.post(
+  '/login',
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/passport/login',
+    failureFlash: true,
+    passReqToCallback: true
+  })
+);
+
 router.get('/signup', (req, res, next) => {
   res.render('passport/signup', {
     errorMessage: req.flash('error')
@@ -58,7 +74,7 @@ router.post('/signup', (req, res, next) => {
     })
     .catch(err => {
       console.error('Error while looking for user', err);
-    });
+  });
 });
 
 module.exports = router;
