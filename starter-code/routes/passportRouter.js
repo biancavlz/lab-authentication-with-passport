@@ -7,6 +7,11 @@ const passport       = require('passport');
 const zxcvbn         = require('zxcvbn');
 const ensureLogin    = require("connect-ensure-login");
 
+router.get('/logout', (req, res, next) => {
+  req.logout();
+  res.redirect('/');
+});
+
 router.get('/login', (req, res, next) => {
   res.render('passport/login', {
     errorMessage: req.flash('error')
