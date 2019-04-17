@@ -7,6 +7,16 @@ const passport       = require('passport');
 const zxcvbn         = require('zxcvbn');
 const ensureLogin    = require("connect-ensure-login");
 
+
+router.get('/private', (req, res, next) => {
+  if (req.isAuthenticated()) {
+    res.render('passport/private');
+  }else{
+    res.render('error', { errorMessage: 'This is a protected route' });
+  }
+});
+
+
 router.get('/logout', (req, res, next) => {
   req.logout();
   res.redirect('/');
@@ -21,7 +31,7 @@ router.get('/login', (req, res, next) => {
 router.post(
   '/login',
   passport.authenticate('local', {
-    successRedirect: '/',
+    successRedirect: '/passport/private',
     failureRedirect: '/passport/login',
     failureFlash: true,
     passReqToCallback: true
